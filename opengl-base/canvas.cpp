@@ -13,26 +13,15 @@
 #endif
 
 namespace kal {
-namespace {
-
-const int CANVAS_ATTRIBUTES[] = {
-	WX_GL_RGBA,
-	WX_GL_DOUBLEBUFFER,
-	0
-};
-
-}
 
 wxBEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
 	EVT_PAINT(Canvas::OnPaint)
 wxEND_EVENT_TABLE()
 
-Canvas::Canvas(wxWindow *parent):
-	wxGLCanvas(parent, wxID_ANY, CANVAS_ATTRIBUTES),
-	m_context(std::make_unique<wxGLContext>(this))
-{
-	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-}
+Canvas::Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wxGLContext> ctx):
+	wxGLCanvas(parent, attrs),
+	m_context(ctx)
+{}
 
 void Canvas::OnPaint(wxPaintEvent &evt)
 {
@@ -43,7 +32,7 @@ void Canvas::OnPaint(wxPaintEvent &evt)
 	wxGLCanvas::SetCurrent(*m_context);
 	wxPaintDC(this);
 
-	glClearColor(1.f, 1.f, 1.f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glFlush();

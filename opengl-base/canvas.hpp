@@ -14,11 +14,11 @@ namespace kal {
 
 class Canvas : public wxGLCanvas {
 public:
-	explicit Canvas(wxWindow *parent);
+	Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wxGLContext> ctx);
 
 
 private:
-	std::unique_ptr<wxGLContext> m_context;
+	std::shared_ptr<wxGLContext> m_context;
 
 	void OnPaint(wxPaintEvent &evt);
 
