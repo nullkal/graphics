@@ -3,6 +3,7 @@
 
 #include "frame.hpp"
 #include "app.hpp"
+#include "config.hpp"
 
 #include <wx/wxprec.h>
 
@@ -27,7 +28,7 @@ std::shared_ptr<wxGLContext> initGLContext(
     GLenum err = glewInit();
     if (err != GLEW_OK) {
         wxString errStr = wxT("Failed to initialize GLEW: ") + wxString(glewGetErrorString(err));
-        wxMessageBox(errStr, APPNAME, wxOK | wxICON_ERROR);
+        wxMessageBox(errStr, APP_NAME, wxOK | wxICON_ERROR);
         wxExit();
     }
 
@@ -35,10 +36,10 @@ std::shared_ptr<wxGLContext> initGLContext(
     return ctx;
 }
 
-}
+} // kal::(anonymous)
 
 Frame::Frame():
-    wxFrame(nullptr, wxID_ANY, APPNAME)
+    wxFrame(nullptr, wxID_ANY, APP_NAME)
 {
     wxGLAttributes glAttrs;
     glAttrs
@@ -57,8 +58,8 @@ Frame::Frame():
         .EndList();
 
     auto ctx = initGLContext(this, glAttrs, ctxAttrs);
-    if (!ctx->IsOK()) {
-        wxMessageBox(wxT("Couldn't create the OpenGL context."), APPNAME, wxOK | wxICON_ERROR);
+    if (!(ctx && ctx->IsOK())) {
+        wxMessageBox(wxT("Couldn't create the OpenGL context."), APP_NAME, wxOK | wxICON_ERROR);
         wxExit();
     }
 

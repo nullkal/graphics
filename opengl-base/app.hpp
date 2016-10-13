@@ -14,8 +14,6 @@ public:
     virtual bool OnInit();
 };
 
-extern const char *APPNAME;
-
 } // kal
 
 wxDECLARE_APP(kal::App);

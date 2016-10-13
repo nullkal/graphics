@@ -23,7 +23,7 @@ private:
     wxStopWatch m_stopWatch;
 
     GLuint m_glProgram;
-    GLuint m_vertexBuffer;
+    GLuint m_vertexArray;
 	
     void OnPaint(wxPaintEvent &evt);
     void OnIdle(wxIdleEvent &evt);

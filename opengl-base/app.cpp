@@ -1,5 +1,6 @@
 #include "app.hpp"
 #include "frame.hpp"
+#include "config.hpp"
 
 #include <wx/wxprec.h>
 
@@ -8,8 +9,6 @@
 #endif
 
 namespace kal {
-
-const char *APPNAME = "OpenGL-Base";
 
 bool App::OnInit()
 {

@@ -24,5 +24,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(Boost_USE_STATIC_LIBS  ON)
 
+function(copy_resource TARGET_NAME RESOURCE)
+	configure_file(
+		${RESOURCE}
+		${CMAKE_BINARY_DIR}/share/${TARGET_NAME}/${RESOURCE}
+		COPYONLY
+	)
+endfunction()
+
 add_subdirectory(opengl-base)
 
