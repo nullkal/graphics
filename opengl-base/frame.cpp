@@ -1,5 +1,7 @@
-#include "frame.hpp"
+#define GLEW_STATIC
+#include <GL/glew.h>
 
+#include "frame.hpp"
 #include "app.hpp"
 
 #include <wx/wxprec.h>
@@ -13,29 +15,54 @@
 namespace kal {
 namespace {
 
-std::shared_ptr<wxGLContext> createContext(wxWindow *p, const wxGLAttributes &attrs) {
-	auto c = new wxGLCanvas(p, attrs); // a wxGLCanvas is needed to initialize wxGLContext
-	auto ctx = std::make_shared<wxGLContext>(c);
+std::shared_ptr<wxGLContext> initGLContext(
+    wxWindow *p,
+    const wxGLAttributes &glAttrs,
+    const wxGLContextAttrs &ctxAttrs)
+{
+    auto c = new wxGLCanvas(p, glAttrs); // wxGLCanvas is needed to initialize wxGLContext
+    auto ctx = std::make_shared<wxGLContext>(c, nullptr, &ctxAttrs);
 
-	c->Destroy();
-	return ctx;
+    c->SetCurrent(*ctx);
+    GLenum err = glewInit();
+    if (err != GLEW_OK) {
+        wxString errStr = wxT("Failed to initialize GLEW: ") + wxString(glewGetErrorString(err));
+        wxMessageBox(errStr, APPNAME, wxOK | wxICON_ERROR);
+        wxExit();
+    }
+
+    c->Destroy();
+    return ctx;
 }
 
 }
 
 Frame::Frame():
-	wxFrame(nullptr, wxID_ANY, APPNAME)
+    wxFrame(nullptr, wxID_ANY, APPNAME)
 {
-	wxGLAttributes attrs;
-	attrs
-		.PlatformDefaults()
-		.MinRGBA(8, 8, 8, 8)
-		.Depth(16)
-		.DoubleBuffer()
-		.EndList();
-	auto ctx = createContext(this, attrs);
+    wxGLAttributes glAttrs;
+    glAttrs
+        .PlatformDefaults()
+        .MinRGBA(8, 8, 8, 8)
+        .Depth(24)
+        .DoubleBuffer()
+        .EndList();
 
-	m_canvas = new Canvas { this, attrs, ctx };
+    wxGLContextAttrs ctxAttrs;
+    ctxAttrs
+        .CoreProfile()
+        .OGLVersion(3, 2)
+        .Robust()
+        .ResetIsolation()
+        .EndList();
+
+    auto ctx = initGLContext(this, glAttrs, ctxAttrs);
+    if (!ctx->IsOK()) {
+        wxMessageBox(wxT("Couldn't create the OpenGL context."), APPNAME, wxOK | wxICON_ERROR);
+        wxExit();
+    }
+
+    m_canvas = new Canvas { this, glAttrs, ctx };
 }
 
-}
+} // kal

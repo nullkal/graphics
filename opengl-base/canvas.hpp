@@ -14,17 +14,25 @@ namespace kal {
 
 class Canvas : public wxGLCanvas {
 public:
-	Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wxGLContext> ctx);
-
+    Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wxGLContext> ctx);
+    ~Canvas();
 
 private:
-	std::shared_ptr<wxGLContext> m_context;
+    std::shared_ptr<wxGLContext> m_context;
 
-	void OnPaint(wxPaintEvent &evt);
+    wxStopWatch m_stopWatch;
 
-	wxDECLARE_EVENT_TABLE();
+    GLuint m_glProgram;
+    GLuint m_vertexBuffer;
+	
+    void OnPaint(wxPaintEvent &evt);
+    void OnIdle(wxIdleEvent &evt);
+
+    double CurrentTime() { return m_stopWatch.TimeInMicro().GetValue() / 1000000.; }
+
+    wxDECLARE_EVENT_TABLE();
 };
 
-}
+} // kal
 
 #endif//GRAPHICS_CANVAS_HPP

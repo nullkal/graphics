@@ -1,5 +1,4 @@
 #include "app.hpp"
-
 #include "frame.hpp"
 
 #include <wx/wxprec.h>
@@ -14,16 +13,16 @@ const char *APPNAME = "OpenGL-Base";
 
 bool App::OnInit()
 {
-	if (!wxApp::OnInit()) {
-		return false;
-	}
+    if (!wxApp::OnInit()) {
+        return false;
+    }
 
-	wxFrame *frame = new Frame;
-	frame->Show(true);
+    wxFrame *frame = new Frame;
+    frame->Show(true);
 
     return true;
 }
 
-}
+} // kal
 
 wxIMPLEMENT_APP(kal::App);

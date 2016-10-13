@@ -1,13 +1,14 @@
+find_package(Boost REQUIRED)
+find_package(wxWidgets COMPONENTS gl core base REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+
+include(${wxWidgets_USE_FILE})
 IF(MSVC)
     set(wxWidgets_CONFIGURATION mswu)
 endif()
 
-find_package(Boost REQUIRED)
-find_package(wxWidgets COMPONENTS gl core base REQUIRED)
-find_package(OpenGL REQUIRED)
-
-include(${wxWidgets_USE_FILE})
-
+set(TARGET_NAME opengl-base)
 set(SRCS
 	app.hpp
     app.cpp
@@ -16,5 +17,12 @@ set(SRCS
 	frame.hpp
 	frame.cpp
 )
-add_executable(opengl-base WIN32 ${SRCS})
-target_link_libraries(opengl-base ${wxWidgets_LIBRARIES} ${OPENGL_gl_LIBRARY})
+
+add_executable(${TARGET_NAME} WIN32 ${SRCS})
+set_property(TARGET ${TARGET_NAME} PROPERTY DEBUG_POSTFIX "_d")
+target_link_libraries(${TARGET_NAME}
+	${wxWidgets_LIBRARIES}
+	${OPENGL_gl_LIBRARY}
+	${OPENGL_glu_LIBRARY}
+	GLEW::GLEW
+)

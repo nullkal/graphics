@@ -16,7 +16,7 @@ public:
 
 extern const char *APPNAME;
 
-}
+} // kal
 
 wxDECLARE_APP(kal::App);
 
