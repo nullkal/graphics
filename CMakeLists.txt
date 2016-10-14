@@ -22,6 +22,10 @@ set(CMAKE_DEBUG_POSTFIX "_d")
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(MSVC)
+	add_definitions(/D_CRT_SECURE_NO_WARNINGS)
+endif()
+
 set(Boost_USE_STATIC_LIBS  ON)
 
 function(copy_resource TARGET_NAME RESOURCE)
@@ -33,4 +37,5 @@ function(copy_resource TARGET_NAME RESOURCE)
 endfunction()
 
 add_subdirectory(opengl-base)
+add_subdirectory(opengl-common)
 

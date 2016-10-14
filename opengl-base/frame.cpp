@@ -3,8 +3,10 @@
 
 #include "frame.hpp"
 #include "app.hpp"
+#include "canvas.hpp"
 #include "config.hpp"
 
+#include <opengl-common/misc.hpp>
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -14,29 +16,6 @@
 #include <memory>
 
 namespace kal {
-namespace {
-
-std::shared_ptr<wxGLContext> initGLContext(
-    wxWindow *p,
-    const wxGLAttributes &glAttrs,
-    const wxGLContextAttrs &ctxAttrs)
-{
-    auto c = new wxGLCanvas(p, glAttrs); // wxGLCanvas is needed to initialize wxGLContext
-    auto ctx = std::make_shared<wxGLContext>(c, nullptr, &ctxAttrs);
-
-    c->SetCurrent(*ctx);
-    GLenum err = glewInit();
-    if (err != GLEW_OK) {
-        wxString errStr = wxT("Failed to initialize GLEW: ") + wxString(glewGetErrorString(err));
-        wxMessageBox(errStr, APP_NAME, wxOK | wxICON_ERROR);
-        wxExit();
-    }
-
-    c->Destroy();
-    return ctx;
-}
-
-} // kal::(anonymous)
 
 Frame::Frame():
     wxFrame(nullptr, wxID_ANY, APP_NAME)
@@ -57,10 +36,9 @@ Frame::Frame():
         .ResetIsolation()
         .EndList();
 
-    auto ctx = initGLContext(this, glAttrs, ctxAttrs);
+    const auto ctx = gl::initGLContext(this, glAttrs, ctxAttrs);
     if (!(ctx && ctx->IsOK())) {
-        wxMessageBox(wxT("Couldn't create the OpenGL context."), APP_NAME, wxOK | wxICON_ERROR);
-        wxExit();
+        wxLogFatalError(wxT("Failed to create the OpenGL context."));
     }
 
     m_canvas = new Canvas { this, glAttrs, ctx };

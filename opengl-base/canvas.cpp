@@ -3,15 +3,14 @@
 
 #include "canvas.hpp"
 #include "config.hpp"
-#include "utils.hpp"
 
+#include <opengl-common/exceptions.hpp>
+#include <opengl-common/shader.hpp>
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-
-#include <cmath>
 
 namespace kal {
 namespace {
@@ -25,6 +24,7 @@ struct Position {
 wxBEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
     EVT_PAINT(Canvas::OnPaint)
     EVT_IDLE(Canvas::OnIdle)
+    EVT_SIZE(Canvas::OnResize)
 wxEND_EVENT_TABLE()
 
 Canvas::Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wxGLContext> ctx):
@@ -32,45 +32,29 @@ Canvas::Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wx
     m_context(ctx),
     m_stopWatch()
 {
-    GLint compiled, linked;
-    this->SetCurrent(*ctx);
+    wxGLCanvas::SetCurrent(*m_context);
 
-    GLuint vertexShader   = glCreateShader(GL_VERTEX_SHADER);
-    if (!ShaderSourceFromFile(vertexShader, "sample.vert")) {
-        wxMessageBox("Failed to load the vertex shader", APP_NAME, wxOK | wxICON_ERROR);
-        wxExit();
+    gl::Shader vertexShader, fragmentShader;
+    try {
+        vertexShader   = gl::Shader::FromFile(GL_VERTEX_SHADER, "sample.vert").Compile();
+        fragmentShader = gl::Shader::FromFile(GL_FRAGMENT_SHADER, "sample.frag").Compile();
     }
-    glCompileShader(vertexShader);
-    printShaderInfoLog(vertexShader);
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compiled);
-    if (compiled == GL_FALSE) {
-        wxMessageBox("Failed to compile the vertex shader", APP_NAME, wxOK | wxICON_ERROR);
-        wxExit();
+    catch (gl::FileException &e) {
+        wxLogFatalError(wxT("Failed to load the shader: ") + wxString(e.what()));
     }
-
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    if (!ShaderSourceFromFile(fragmentShader, "sample.frag")) {
-        wxMessageBox("Failed to load the fragment shader", APP_NAME, wxOK | wxICON_ERROR);
-        wxExit();
-    }
-    glCompileShader(fragmentShader);
-    printShaderInfoLog(fragmentShader);
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compiled);
-    if (compiled == GL_FALSE) {
-        wxMessageBox("Failed to compile the fragment shader", APP_NAME, wxOK | wxICON_ERROR);
-        wxExit();
+    catch (gl::ShaderCompileException &e) {
+        wxLogFatalError(wxT("Failed to compile the shader: ") + wxString(e.what()));
     }
 
     m_glProgram = glCreateProgram();
-    glAttachShader(m_glProgram, vertexShader);
-    glAttachShader(m_glProgram, fragmentShader);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    glAttachShader(m_glProgram, vertexShader.Get());
+    glAttachShader(m_glProgram, fragmentShader.Get());
 
     glBindAttribLocation(m_glProgram, 0, "position");
 
     glLinkProgram(m_glProgram);
+
+    GLint linked;
     glGetProgramiv(m_glProgram, GL_LINK_STATUS, &linked);
     if (linked == GL_FALSE) {
         wxMessageBox("Failed to link shaders", APP_NAME, wxOK | wxICON_ERROR);
@@ -81,9 +65,7 @@ Canvas::Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wx
 }
 
 Canvas::~Canvas()
-{
-
-}
+{}
 
 void Canvas::OnPaint(wxPaintEvent &evt)
 {
@@ -96,10 +78,6 @@ void Canvas::OnPaint(wxPaintEvent &evt)
 
     const GLfloat black[] = { 0.0f, 0.0f, 0.0f, 1.0f };
     glClearBufferfv(GL_COLOR, 0, black);
-
-    int width, height;
-    GetClientSize(&width, &height);
-    glViewport(0, 0, width, height);
 
     glUseProgram(m_glProgram);
 
@@ -117,6 +95,16 @@ void Canvas::OnIdle(wxIdleEvent &evt)
 {
     Refresh();
     evt.RequestMore();
+}
+
+
+void Canvas::OnResize(wxSizeEvent &evt)
+{
+    wxGLCanvas::SetCurrent(*m_context);
+
+    int width, height;
+    GetClientSize(&width, &height);
+    glViewport(0, 0, width, height);
 }
 
 } // kal

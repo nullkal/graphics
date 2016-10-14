@@ -1,8 +1,6 @@
 #ifndef GRAPHICS_FRAME_HPP
 #define GRAPHICS_FRAME_HPP
 
-#include "canvas.hpp"
-
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -10,6 +8,8 @@
 #endif
 
 namespace kal {
+
+class Canvas;
 
 class Frame : public wxFrame {
 public:

@@ -27,6 +27,7 @@ private:
 	
     void OnPaint(wxPaintEvent &evt);
     void OnIdle(wxIdleEvent &evt);
+    void OnResize(wxSizeEvent &evt);
 
     double CurrentTime() { return m_stopWatch.TimeInMicro().GetValue() / 1000000.; }
 

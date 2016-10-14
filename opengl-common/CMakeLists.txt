@@ -8,34 +8,28 @@ IF(MSVC)
     set(wxWidgets_CONFIGURATION mswu)
 endif()
 
-set(TARGET_NAME opengl-base)
-set(APP_NAME "OpenGL-Base")
+set(TARGET_NAME opengl-common)
 set(SRCS
-	shaders/sample.vert
-	shaders/sample.frag
-	config.hpp
-	app.hpp
-    app.cpp
-	canvas.hpp
-	canvas.cpp
-	frame.hpp
-	frame.cpp
+    misc.cpp
+    include/opengl-common/misc.hpp
+    exceptions.cpp
+    include/opengl-common/exceptions.hpp
+    shader.cpp
+    include/opengl-common/shader.hpp
+	shader-holders.cpp
+	shader-holders.hpp
+    program.cpp
+    include/opengl-common/program.hpp
 )
 
-add_executable(${TARGET_NAME} WIN32 ${SRCS})
+add_library(${TARGET_NAME} ${SRCS})
 set_property(TARGET ${TARGET_NAME} PROPERTY DEBUG_POSTFIX "_d")
 target_link_libraries(${TARGET_NAME}
-	opengl-common
 	${wxWidgets_LIBRARIES}
 	${OPENGL_gl_LIBRARY}
 	${OPENGL_glu_LIBRARY}
 	GLEW::GLEW
 )
-
-configure_file(
-	config.hpp.in
-	${CMAKE_CURRENT_BINARY_DIR}/config.hpp
+target_include_directories(${TARGET_NAME}
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-
-copy_resource(${TARGET_NAME} shaders/sample.vert)
-copy_resource(${TARGET_NAME} shaders/sample.frag)

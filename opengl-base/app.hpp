@@ -9,9 +9,15 @@
 
 namespace kal {
 
+class Frame;
+
 class App: public wxApp {
 public:
     virtual bool OnInit();
+
+private:
+    Frame *m_frame;
+    wxLogWindow *m_logWindow;
 };
 
 } // kal

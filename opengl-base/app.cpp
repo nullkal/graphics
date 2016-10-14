@@ -1,6 +1,6 @@
 #include "app.hpp"
-#include "frame.hpp"
 #include "config.hpp"
+#include "frame.hpp"
 
 #include <wx/wxprec.h>
 
@@ -16,8 +16,15 @@ bool App::OnInit()
         return false;
     }
 
-    wxFrame *frame = new Frame;
-    frame->Show(true);
+    SetAppName(APP_NAME);
+
+    m_frame = new Frame;
+    m_logWindow = new wxLogWindow{ m_frame, wxT("Log - ") + wxString(APP_NAME) };
+
+    m_frame->SetSize(640, 480);
+
+    m_frame->Show(true);
+    m_logWindow->Show(true);
 
     return true;
 }
