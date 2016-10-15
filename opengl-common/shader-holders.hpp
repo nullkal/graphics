@@ -1,8 +1,6 @@
 #ifndef OPENGL_COMMON_SHADER_HOLDERS_HPP
 #define OPENGL_COMMON_SHADER_HOLDERS_HPP
 
-#include "opengl-common/shader.hpp"
-
 #ifdef Apple
 #include <OpenGL/gl.h>
 #else
@@ -34,8 +32,8 @@ public:
     virtual GLuint Get() const;
 
 private:
-    const GLuint m_shader;
     int* const m_refCount;
+    const GLuint m_shader;
 };
 
 class RawShaderHolder: public IShaderHolder {

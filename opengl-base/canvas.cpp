@@ -2,10 +2,11 @@
 #include <GL/glew.h>
 
 #include "canvas.hpp"
-#include "config.hpp"
 
 #include <opengl-common/exceptions.hpp>
+#include <opengl-common/program.hpp>
 #include <opengl-common/shader.hpp>
+
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -34,10 +35,14 @@ Canvas::Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wx
 {
     wxGLCanvas::SetCurrent(*m_context);
 
-    gl::Shader vertexShader, fragmentShader;
     try {
-        vertexShader   = gl::Shader::FromFile(GL_VERTEX_SHADER, "sample.vert").Compile();
-        fragmentShader = gl::Shader::FromFile(GL_FRAGMENT_SHADER, "sample.frag").Compile();
+        m_program = gl::Program()
+            .AttachShader(gl::Shader::FromFile(GL_VERTEX_SHADER, "sample.vert").Compile())
+            .AttachShader(gl::Shader::FromFile(GL_FRAGMENT_SHADER, "sample.frag").Compile());
+
+        glBindAttribLocation(m_program, 0, "position");
+
+        m_program.Link();
     }
     catch (gl::FileException &e) {
         wxLogFatalError(wxT("Failed to load the shader: ") + wxString(e.what()));
@@ -45,20 +50,8 @@ Canvas::Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wx
     catch (gl::ShaderCompileException &e) {
         wxLogFatalError(wxT("Failed to compile the shader: ") + wxString(e.what()));
     }
-
-    m_glProgram = glCreateProgram();
-    glAttachShader(m_glProgram, vertexShader.Get());
-    glAttachShader(m_glProgram, fragmentShader.Get());
-
-    glBindAttribLocation(m_glProgram, 0, "position");
-
-    glLinkProgram(m_glProgram);
-
-    GLint linked;
-    glGetProgramiv(m_glProgram, GL_LINK_STATUS, &linked);
-    if (linked == GL_FALSE) {
-        wxMessageBox("Failed to link shaders", APP_NAME, wxOK | wxICON_ERROR);
-        wxExit();
+    catch (gl::ProgramLinkException &e) {
+        wxLogFatalError(wxT("Failed to link the shaders: ") + wxString(e.what()));
     }
 
     glGenVertexArrays(1, &m_vertexArray);
@@ -79,7 +72,7 @@ void Canvas::OnPaint(wxPaintEvent &evt)
     const GLfloat black[] = { 0.0f, 0.0f, 0.0f, 1.0f };
     glClearBufferfv(GL_COLOR, 0, black);
 
-    glUseProgram(m_glProgram);
+    m_program.Use();
 
     glBindVertexArray(m_vertexArray);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

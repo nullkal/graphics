@@ -20,6 +20,8 @@ set(SRCS
 	shader-holders.hpp
     program.cpp
     include/opengl-common/program.hpp
+	program-holders.cpp
+	program-holders.hpp
 )
 
 add_library(${TARGET_NAME} ${SRCS})

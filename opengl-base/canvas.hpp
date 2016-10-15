@@ -1,6 +1,8 @@
 #ifndef GRAPHICS_CANVAS_HPP
 #define GRAPHICS_CANVAS_HPP
 
+#include <opengl-common/program.hpp>
+
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -22,7 +24,7 @@ private:
 
     wxStopWatch m_stopWatch;
 
-    GLuint m_glProgram;
+    gl::Program m_program;
     GLuint m_vertexArray;
 	
     void OnPaint(wxPaintEvent &evt);

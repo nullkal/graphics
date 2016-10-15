@@ -17,6 +17,7 @@
 #include <wx/stdpaths.h>
 #include <algorithm>
 #include <memory>
+#include <string>
 
 namespace kal {
 namespace gl {
@@ -47,7 +48,7 @@ Shader::Shader(const Shader &obj):
     }
 }
 
-Shader::Shader(std::unique_ptr<internal::IShaderHolder> &&holder):
+Shader::Shader(std::unique_ptr<IShaderHolder> &&holder):
     m_holder(std::move(holder))
 {}
 

@@ -10,15 +10,15 @@ namespace gl {
 namespace internal {
 
 ManagedShaderHolder::ManagedShaderHolder(GLenum shaderType):
-    m_shader(glCreateShader(shaderType)),
-    m_refCount(new int(1))
+    m_refCount(new int(1)),
+    m_shader(glCreateShader(shaderType))
 {
     // FIXME: throw an exception if this constructor fails to create a shader
 }
 
 ManagedShaderHolder::ManagedShaderHolder(const ManagedShaderHolder &obj):
-    m_shader(obj.m_shader),
-    m_refCount(obj.m_refCount)
+    m_refCount(obj.m_refCount),
+    m_shader(obj.m_shader)
 {
     ++(*m_refCount);
 }
