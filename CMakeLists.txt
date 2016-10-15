@@ -36,6 +36,9 @@ function(copy_resource TARGET_NAME RESOURCE)
 	)
 endfunction()
 
+add_custom_target(docs)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 add_subdirectory(opengl-base)
 add_subdirectory(opengl-common)
 
