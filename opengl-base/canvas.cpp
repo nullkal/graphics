@@ -14,13 +14,6 @@
 #endif
 
 namespace kal {
-namespace {
-
-struct Position {
-    GLfloat x, y, z;
-};
-
-} // kal::(anonymous)
 
 wxBEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
     EVT_PAINT(Canvas::OnPaint)
@@ -39,9 +32,6 @@ Canvas::Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wx
         m_program = gl::Program()
             .AttachShader(gl::Shader::FromFile(GL_VERTEX_SHADER, "sample.vert").Compile())
             .AttachShader(gl::Shader::FromFile(GL_FRAGMENT_SHADER, "sample.frag").Compile());
-
-        glBindAttribLocation(m_program, 0, "position");
-
         m_program.Link();
     }
     catch (gl::FileException &e) {
