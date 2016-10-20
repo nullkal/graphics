@@ -111,7 +111,7 @@ public:
     virtual GLuint Get() const;
 
 private:
-    const GLuint m_program; /** < The holding program object */
+    const GLuint m_program; /**< The holding program object */
 };
 
 }}} // kal::gl::internal
