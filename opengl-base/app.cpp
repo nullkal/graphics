@@ -1,3 +1,15 @@
+/**
+ * @file   app.cpp
+ * @author nullkal <nullkal@nil.nu>
+ */
+
+/*
+ * Copyright (c) 2016 nullkal <nullkal@nil.nu>
+ *
+ * This file is distributed under the MIT License.
+ * See LICENSE for more information.
+ */
+
 #include "app.hpp"
 #include "config.hpp"
 #include "frame.hpp"

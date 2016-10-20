@@ -1,3 +1,17 @@
+/**
+ * @file   shader-holders.cpp
+ * @author nullkal <nullkal@nil.nu>
+ *
+ * @brief  implements IShaderHolder, ManagedShaderHolder, and RawShaderHolder.
+ */
+
+/*
+ * Copyright (c) 2016 nullkal <nullkal@nil.nu>
+ *
+ * This file is distributed under the MIT License.
+ * See LICENSE for more information.
+ */
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 

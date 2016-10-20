@@ -1,3 +1,15 @@
+/**
+ * @file   canvas.cpp
+ * @author nullkal <nullkal@nil.nu>
+ */
+
+/*
+ * Copyright (c) 2016 nullkal <nullkal@nil.nu>
+ *
+ * This file is distributed under the MIT License.
+ * See LICENSE for more information.
+ */
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 
@@ -26,21 +38,22 @@ Canvas::Canvas(wxWindow *parent, const wxGLAttributes &attrs, std::shared_ptr<wx
     m_context(ctx),
     m_stopWatch()
 {
+    using namespace gl;
     wxGLCanvas::SetCurrent(*m_context);
 
     try {
-        m_program = gl::Program()
-            .AttachShader(gl::Shader::FromFile(GL_VERTEX_SHADER, "sample.vert").Compile())
-            .AttachShader(gl::Shader::FromFile(GL_FRAGMENT_SHADER, "sample.frag").Compile());
+        m_program = Program()
+            .AttachShader(Shader::FromFile(GL_VERTEX_SHADER,   "sample.vert").Compile())
+            .AttachShader(Shader::FromFile(GL_FRAGMENT_SHADER, "sample.frag").Compile());
         m_program.Link();
     }
-    catch (gl::FileException &e) {
+    catch (FileException &e) {
         wxLogFatalError(wxT("Failed to load the shader: ") + wxString(e.what()));
     }
-    catch (gl::ShaderCompileException &e) {
+    catch (ShaderCompileException &e) {
         wxLogFatalError(wxT("Failed to compile the shader: ") + wxString(e.what()));
     }
-    catch (gl::ProgramLinkException &e) {
+    catch (ProgramLinkException &e) {
         wxLogFatalError(wxT("Failed to link the shaders: ") + wxString(e.what()));
     }
 

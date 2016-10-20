@@ -1,3 +1,15 @@
+/**
+ * @file   canvas.hpp
+ * @author nullkal <nullkal@nil.nu>
+ */
+
+/*
+ * Copyright (c) 2016 nullkal <nullkal@nil.nu>
+ *
+ * This file is distributed under the MIT License.
+ * See LICENSE for more information.
+ */
+
 #ifndef GRAPHICS_CANVAS_HPP
 #define GRAPHICS_CANVAS_HPP
 

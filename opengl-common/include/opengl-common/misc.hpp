@@ -1,3 +1,17 @@
+/**
+ * @file   misc.hpp
+ * @author nullkal <nullkal@nil.nu>
+ *
+ * @brief  declares various library functions
+ */
+
+/*
+ * Copyright (c) 2016 nullkal <nullkal@nil.nu>
+ *
+ * This file is distributed under the MIT License.
+ * See LICENSE for more information.
+ */
+
 #ifndef OPENGL_COMMON_MISC_HPP
 #define OPENGL_COMMON_MISC_HPP
 

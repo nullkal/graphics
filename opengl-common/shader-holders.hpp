@@ -1,3 +1,17 @@
+/**
+ * @file   shader-holders.hpp
+ * @author nullkal <nullkal@nil.nu>
+ *
+ * @brief  declares IShaderHolder, ManagedShaderHolder, and RawShaderHolder.
+ */
+
+/*
+ * Copyright (c) 2016 nullkal <nullkal@nil.nu>
+ *
+ * This file is distributed under the MIT License.
+ * See LICENSE for more information.
+ */
+
 #ifndef OPENGL_COMMON_SHADER_HOLDERS_HPP
 #define OPENGL_COMMON_SHADER_HOLDERS_HPP
 
