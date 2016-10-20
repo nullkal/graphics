@@ -37,7 +37,7 @@ public:
     virtual ~IProgramHolder() {}
 
     /**
-     * @brief Clone the object
+     * @brief Clone the instance
      *
      * @note The pointer this function returns should be deletable using
      *       `delete` operator.
@@ -86,8 +86,8 @@ public:
     virtual GLuint Get() const;
 
 private:
-    int* const m_refCount; /**< The referece counting variable  */
-    const GLuint m_program; /** < The holding program object */
+    int* const m_refCount; /**< The referece counter  */
+    const GLuint m_program; /**< The holding program object */
 };
 
 /**
@@ -102,6 +102,8 @@ class RawProgramHolder : public IProgramHolder {
 public:
     /**
      * @brief The constructor
+     *
+     * @param[in] program  The program object
      */
     explicit RawProgramHolder(GLuint program);
 
