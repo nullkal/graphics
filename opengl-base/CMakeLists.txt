@@ -44,16 +44,3 @@ configure_file(
 
 copy_resource(${TARGET_NAME} shaders/sample.vert)
 copy_resource(${TARGET_NAME} shaders/sample.frag)
-
-if(DOXYGEN_FOUND)
-	configure_file(
-		doxygen.conf.in
-		${CMAKE_CURRENT_BINARY_DIR}/doxygen.conf
-	)
-	add_custom_target(${TARGET_NAME}_doc
-		${DOXYGEN_EXECUTABLE} doxygen.conf
-		DEPENDS doxygen.conf
-	)
-	set_target_properties(${TARGET_NAME}_doc PROPERTIES FOLDER Documentations)
-	add_dependencies(docs ${TARGET_NAME}_doc)
-endif()
