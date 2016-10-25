@@ -32,23 +32,23 @@ namespace internal {
 class IProgramHolder {
 public:
     /**
-     * @brief The destructor
+     * @brief The destructor.
      */
     virtual ~IProgramHolder() {}
 
     /**
-     * @brief Clone the instance
+     * @brief Clone the instance.
      *
      * @note The pointer this function returns should be deletable using
      *       `delete` operator.
      *
-     * @return The cloned IProgramHolder object
+     * @return The cloned IProgramHolder object.
      */
     virtual IProgramHolder* Clone() const = 0;
 
     /**
-     * @brief  Get the holding program object
-     * @return The program object
+     * @brief  Get the holding program object.
+     * @return The program object.
      */
     virtual GLuint Get() const = 0;
 };
@@ -63,22 +63,22 @@ public:
 class ManagedProgramHolder : public IProgramHolder {
 public:
     /**
-     * @brief The default constructor
+     * @brief The default constructor.
      */
     ManagedProgramHolder();
 
     /**
-     * @brief The copy constructor
+     * @brief The copy constructor.
      */
     ManagedProgramHolder(const ManagedProgramHolder &obj);
 
     /**
-     * @brief The copy assignment operator
+     * @brief The copy assignment operator.
      */
     ManagedProgramHolder &operator=(const ManagedProgramHolder &obj);
 
     /**
-     * @brief The destructor
+     * @brief The destructor.
      */
     ~ManagedProgramHolder();
 
@@ -86,8 +86,8 @@ public:
     virtual GLuint Get() const;
 
 private:
-    int* const m_refCount; /**< The referece counter  */
-    const GLuint m_program; /**< The holding program object */
+    int* const m_refCount; /**< The referece counter.  */
+    const GLuint m_program; /**< The holding program object. */
 };
 
 /**
@@ -101,9 +101,9 @@ private:
 class RawProgramHolder : public IProgramHolder {
 public:
     /**
-     * @brief The constructor
+     * @brief The constructor.
      *
-     * @param[in] program  The program object
+     * @param[in] program  The program object.
      */
     explicit RawProgramHolder(GLuint program);
 
@@ -111,7 +111,7 @@ public:
     virtual GLuint Get() const;
 
 private:
-    const GLuint m_program; /**< The holding program object */
+    const GLuint m_program; /**< The holding program object. */
 };
 
 }}} // kal::gl::internal

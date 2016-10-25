@@ -2,7 +2,7 @@
  * @file   exceptions.cpp
  * @author nullkal <nullkal@nil.nu>
  *
- * @brief  implements various exceptions used widely in this library
+ * @brief  implements various exceptions used widely in this library.
  */
 
 /*

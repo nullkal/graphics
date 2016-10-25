@@ -2,7 +2,7 @@
 * @file   misc.cpp
 * @author nullkal <nullkal@nil.nu>
 *
-* @brief  implements various library functions
+* @brief  implements various library functions.
 */
 
 /*
@@ -41,6 +41,10 @@ std::shared_ptr<wxGLContext> initGLContext(
         new wxGLCanvas(p, glAttrs),
         canvasDeleter); // wxGLCanvas is needed to initialize wxGLContext
     auto ctx = std::make_shared<wxGLContext>(c.get(), nullptr, &ctxAttrs);
+
+    if (!ctx->IsOK()) {
+        return nullptr;
+    }
 
     c->SetCurrent(*ctx);
     const GLenum err = glewInit();

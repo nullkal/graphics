@@ -2,7 +2,7 @@
  * @file   exceptions.hpp
  * @author nullkal <nullkal@nil.nu>
  *
- * @brief  declares various exceptions used widely in this library
+ * @brief  declares various exceptions used widely in this library.
  */
 
 /*
@@ -21,20 +21,31 @@
 namespace kal {
 namespace gl {
 
+/**
+ * @brief The exception thrown when the file operation is failed.
+ */
 class FileException: public std::exception {
 public:
+    /**
+     * @brief The constructor.
+     * @param[in] message  The error message.
+     */
     explicit FileException(const char* const message):
         std::exception(),
         m_message(message)
     {}
 
+    /**
+     * @brief Return the error message.
+     * @return The error message.
+     */
     const char* what() const
     {
         return m_message.c_str();
     }
 
 private:
-    std::string m_message;
+    std::string m_message; /**< The error message. */
 };
 
 }} // kal::gl

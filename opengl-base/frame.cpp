@@ -49,7 +49,7 @@ Frame::Frame():
         .EndList();
 
     const auto ctx = gl::initGLContext(this, glAttrs, ctxAttrs);
-    if (!(ctx && ctx->IsOK())) {
+    if (!ctx) {
         wxLogFatalError(wxT("Failed to create the OpenGL context."));
     }
 

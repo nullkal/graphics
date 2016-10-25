@@ -32,23 +32,23 @@ namespace internal {
 class IShaderHolder {
 public:
     /**
-     * @brief The destructor
+     * @brief The destructor.
      */
     virtual ~IShaderHolder() {}
 
     /**
-     * @brief Clone the instance
+     * @brief Clone the instance.
      *
      * @note The pointer this function returns should be deletable using
      *       `delete` operator.
      *
-     * @return The cloned IShaderHolder instance
+     * @return The cloned IShaderHolder instance.
      */
     virtual IShaderHolder* Clone() const = 0;
 
     /**
-     * @brief  Get the holding shader object
-     * @return The shader object
+     * @brief  Get the holding shader object.
+     * @return The shader object.
      */
     virtual GLuint Get() const = 0;
 };
@@ -63,24 +63,24 @@ public:
 class ManagedShaderHolder: public IShaderHolder {
 public:
     /**
-     * @brief The constructor
+     * @brief The constructor.
      *
-     * @param[in] shaderType  The shader type you want
+     * @param[in] shaderType  The shader type you want.
      */
     ManagedShaderHolder(GLenum shaderType);
 
     /**
-     * @brief The copy constructor
+     * @brief The copy constructor.
      */
     ManagedShaderHolder(const ManagedShaderHolder &obj);
 
     /**
-     * @brief The copy assignment operator
+     * @brief The copy assignment operator.
      */
     ManagedShaderHolder &operator=(const ManagedShaderHolder &obj);
 
     /**
-     * @brief The destructor
+     * @brief The destructor.
      */
     ~ManagedShaderHolder();
 
@@ -88,8 +88,8 @@ public:
     virtual GLuint Get() const;
 
 private:
-    int* const m_refCount; /**< The referece counter */
-    const GLuint m_shader; /**< The holding shader object */
+    int* const m_refCount; /**< The referece counter. */
+    const GLuint m_shader; /**< The holding shader object. */
 };
 
 /**
@@ -103,9 +103,9 @@ private:
 class RawShaderHolder: public IShaderHolder {
 public:
     /**
-     * @brief The constructor
+     * @brief The constructor.
      *
-     * @param[in] shader  The shader object
+     * @param[in] shader  The shader object.
      */
     explicit RawShaderHolder(GLuint shader);
 
@@ -113,7 +113,7 @@ public:
     virtual GLuint Get() const;
 
 private:
-    const GLuint m_shader; /**< The holding shader object */
+    const GLuint m_shader; /**< The holding shader object. */
 };
 
 }}} // kal::gl::internal
